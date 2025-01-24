@@ -1,0 +1,118 @@
+{
+  "name": "Data Structure Exercise",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://api.quotable.io/quotes",
+        "options": {
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -340,
+        160
+      ],
+      "id": "2acedb05-8450-4442-95da-bf0d93d4f13c",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -520,
+        160
+      ],
+      "id": "f86b7aae-0381-4c87-abf0-a0c296321488",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "results",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "e6185e7b-d64a-4aa0-9e91-a83fd6de3291",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "jsCode": "let items = $input.all();\nreturn items[0].json.results.map(item => {\n\treturn {\n\t\tjson: item\n\t}\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        160
+      ],
+      "id": "684bb8eb-63e5-49d8-940b-a09c03882722",
+      "name": "JavaScript"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "items = _input.all()\nresults = items[0]['json']['results']\noutput = [{'json': item} for item in results]\nreturn output"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        320
+      ],
+      "id": "a3f9f0f4-fd40-4809-b892-70853cfeb3c1",
+      "name": "Python"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "JavaScript",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Python",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b8041bf2-d8ff-4f6b-a771-8b60cd96422d",
+  "meta": {
+    "instanceId": "558d88703fb65b2d0e44613bc35916258b0f0bf983c5d4730c00c424b77ca36a"
+  },
+  "id": "z6H5AARWCahytOMd",
+  "tags": []
+}
