@@ -1,0 +1,198 @@
+{
+  "name": "Date Exercise",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "getAllPeople",
+        "returnAll": true
+      },
+      "type": "n8n-nodes-base.n8nTrainingCustomerDatastore",
+      "typeVersion": 1,
+      "position": [
+        -420,
+        -100
+      ],
+      "id": "8c460ad2-c7a1-4492-8624-eb637864cd07",
+      "name": "Customer Datastore (n8n training)"
+    },
+    {
+      "parameters": {
+        "operation": "roundDate",
+        "date": "={{ $json.created }}",
+        "mode": "roundUp",
+        "outputFieldName": "new-date",
+        "options": {
+          "includeInputFields": true
+        }
+      },
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        -200,
+        -100
+      ],
+      "id": "6461620d-a807-438a-b68a-cb729426b10f",
+      "name": "Date & Time"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "7a8e1711-0e6f-456b-ad6a-c59a99ea8d79",
+              "leftValue": "={{ $json['new-date'] }}",
+              "rightValue": "1960-01-01T00:00:00",
+              "operator": {
+                "type": "dateTime",
+                "operation": "after"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        -100
+      ],
+      "id": "b6427daf-bf7c-4c60-99c0-4487c9ee519a",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "amount": 1,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        220,
+        -200
+      ],
+      "id": "d3d81b6a-3422-49af-b5e7-9e026ec71cf6",
+      "name": "Wait",
+      "webhookId": "31b0ccf0-e418-4f98-a316-d26d4c0165f3"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7081bd0e-f786-4401-83f6-188f47489af3",
+              "name": "outputValue",
+              "value": "={{ $json['new-date'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        440,
+        -200
+      ],
+      "id": "4112271c-8e8a-40a6-9565-d083abd2d535",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 30
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -640,
+        -100
+      ],
+      "id": "29ba9571-aefe-4242-aa66-c3efded80519",
+      "name": "Schedule Trigger"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Customer Datastore (n8n training)": {
+      "main": [
+        [
+          {
+            "node": "Date & Time",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Customer Datastore (n8n training)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "f57488df-08cd-4b4c-87a2-63264e4c744b",
+  "meta": {
+    "instanceId": "558d88703fb65b2d0e44613bc35916258b0f0bf983c5d4730c00c424b77ca36a"
+  },
+  "id": "p0UOLeHqKaJZKshk",
+  "tags": []
+}
