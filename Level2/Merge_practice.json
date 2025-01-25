@@ -1,0 +1,108 @@
+{
+  "name": "Merge practice",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -320,
+        -40
+      ],
+      "id": "e45f7f52-018c-485f-b61e-b00201c1f266",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "fieldsToMatchString": "name",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        220,
+        -40
+      ],
+      "id": "5e5c2778-4e5e-443f-91ac-1bccb1a581ba",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "operation": "getAllPeople"
+      },
+      "type": "n8n-nodes-base.n8nTrainingCustomerDatastore",
+      "typeVersion": 1,
+      "position": [
+        -40,
+        -160
+      ],
+      "id": "211eccac-2a87-4a55-96b2-811dd4e85952",
+      "name": "Customer Datastore (n8n training)"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Define the array of character objects\nconst characters = [\n  {\n    name: \"Jay Gatsby\",\n    language: \"English\",\n    country: {\n      code: \"US\",\n      name: \"United States\",\n    },\n  },\n  {\n    name: \"José Arcadio Buendía\",\n    language: \"Spanish\",\n    country: {\n      code: \"CO\",\n      name: \"Colombia\",\n    },\n  },\n];\n\n// Map each character to the n8n item format\nreturn characters.map((char) => ({ json: char }));\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -40,
+        60
+      ],
+      "id": "e537427e-d4e1-4018-9ec3-8c5c822cbd11",
+      "name": "Code"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Customer Datastore (n8n training)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Customer Datastore (n8n training)": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "98f15da3-1fcf-461d-a484-d43df6abb2d6",
+  "meta": {
+    "instanceId": "558d88703fb65b2d0e44613bc35916258b0f0bf983c5d4730c00c424b77ca36a"
+  },
+  "id": "UoiwpmYxrgZbubYT",
+  "tags": []
+}
