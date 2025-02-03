@@ -14,7 +14,6 @@
     },
     {
       "parameters": {
-        "chatId": "1102793055",
         "text": "Something wrong",
         "additionalFields": {}
       },
@@ -54,7 +53,7 @@
     "timezone": "Asia/Taipei",
     "callerPolicy": "workflowsFromSameOwner"
   },
-  "versionId": "685299ac-e7be-464a-9155-771686c2b7e0",
+  "versionId": "d61de747-5062-4207-b07a-542d09f9533c",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "558d88703fb65b2d0e44613bc35916258b0f0bf983c5d4730c00c424b77ca36a"
