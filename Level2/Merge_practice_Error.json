@@ -1,0 +1,119 @@
+{
+  "name": "Merge practice Error",
+  "nodes": [
+    {
+      "parameters": {
+        "mode": "combine",
+        "fieldsToMatchString": "name",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        480,
+        -120
+      ],
+      "id": "ac86ba96-e4d1-4ac0-b896-7ffbe0d379ac",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "operation": "getAllPeople"
+      },
+      "type": "n8n-nodes-base.n8nTrainingCustomerDatastore",
+      "typeVersion": 1,
+      "position": [
+        220,
+        -240
+      ],
+      "id": "04fb00db-417b-4f04-85fe-09fb8a4fff2f",
+      "name": "Customer Datastore (n8n training)"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Define the array of character objects\nconst characters = [\n  {\n    name: \"Jay Gatsby\",\n    language: \"English\",\n    country: {\n      code: \"US\",\n      name: \"United States\",\n    },\n  },\n  {\n    name: \"José Arcadio Buendía\",\n    language: \"Spanish\",\n    country: {\n      code: \"CO\",\n      name: \"Colombia\",\n    },\n  },\n];\n\n// Map each character to the n8n item format\nreturn character.map((char) => ({ json: char }));\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        -20
+      ],
+      "id": "24b91bb9-c1c9-4ea3-88a7-a38d9379d55c",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "seconds"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -120,
+        -120
+      ],
+      "id": "730082d7-8db8-4e5d-aaca-dd8bf6a30b45",
+      "name": "Schedule Trigger"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Customer Datastore (n8n training)": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Customer Datastore (n8n training)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Asia/Taipei",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "YaDoqSm5OIztUB26"
+  },
+  "versionId": "c49713aa-cbac-4560-a3dd-378ab8b19844",
+  "meta": {
+    "instanceId": "558d88703fb65b2d0e44613bc35916258b0f0bf983c5d4730c00c424b77ca36a"
+  },
+  "id": "H1ZUkWOTvnkCNwDU",
+  "tags": []
+}

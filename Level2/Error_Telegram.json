@@ -1,0 +1,64 @@
+{
+  "name": "Error Telegram",
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "Error Trigger",
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        -40,
+        0
+      ],
+      "id": "f8a78bb0-1850-4140-b537-df54b70aaf43"
+    },
+    {
+      "parameters": {
+        "chatId": "1102793055",
+        "text": "Something wrong",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        180,
+        0
+      ],
+      "id": "200bab0f-bb67-4471-8865-bc45fa952cb4",
+      "name": "Telegram",
+      "credentials": {
+        "telegramApi": {
+          "id": "1l31tH9zxcEmrWIy",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Asia/Taipei",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "685299ac-e7be-464a-9155-771686c2b7e0",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "558d88703fb65b2d0e44613bc35916258b0f0bf983c5d4730c00c424b77ca36a"
+  },
+  "id": "YaDoqSm5OIztUB26",
+  "tags": []
+}
