@@ -1,0 +1,130 @@
+{
+  "name": "Stop and Error practice",
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.isError }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "name": "IF - Is Error?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        320,
+        -80
+      ],
+      "id": "93ba7e6a-ff80-4014-a624-e14ba5cbf039"
+    },
+    {
+      "parameters": {
+        "errorMessage": "={{$node[\"Check Data\"].json[\"message\"]}}"
+      },
+      "name": "Stop And Error",
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        560,
+        -160
+      ],
+      "id": "e745302f-7b65-4bfe-9116-74a7b4bdaba0"
+    },
+    {
+      "parameters": {},
+      "name": "Normal Process",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        560,
+        0
+      ],
+      "id": "4ac99724-6125-45ba-bd53-71812243bb43"
+    },
+    {
+      "parameters": {
+        "jsCode": "const value = 1; // Simulated value\n\n// If value equals 1, that's an error condition\nconst isError = (value === 1);\n\nreturn [{ json: { isError, message: isError ? \"Error: value equals 1\" : \"All good\", value } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        120,
+        -80
+      ],
+      "id": "afdf0c9b-15ad-44fe-a7a3-104b1728ce44",
+      "name": "Code"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -60,
+        -80
+      ],
+      "id": "335d1123-7cfb-4f8e-96ed-cb6fe17c6730",
+      "name": "When clicking ‘Test workflow’"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "IF - Is Error?": {
+      "main": [
+        [
+          {
+            "node": "Stop And Error",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Normal Process",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "IF - Is Error?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Asia/Taipei",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "YaDoqSm5OIztUB26"
+  },
+  "versionId": "bd8bd6eb-511a-402a-99f1-ff6232119c5a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "558d88703fb65b2d0e44613bc35916258b0f0bf983c5d4730c00c424b77ca36a"
+  },
+  "id": "eQKPWz0fMSUPMspb",
+  "tags": []
+}
