@@ -1,0 +1,194 @@
+{
+  "name": "Level2 AQI Exercise",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://data.moenv.gov.tw/api/v2/aqx_p_432?api_key=9e565f9a-84dd-4e79-9097-d403cae1ea75&limit=1000&sort=ImportDate%20desc&format=JSON",
+        "options": {
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -360,
+        -60
+      ],
+      "id": "566d9c62-d966-4226-b729-683f396c09d3",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -540,
+        -60
+      ],
+      "id": "9f4bea55-8c8f-47be-a07c-ad7ddaf935cf",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\n\nreturn items[0].json.records.map(record => {\n\treturn {\n\t\tjson: {\"sitename\":record.sitename,\n               \"pm2.5\":record[\"pm2.5\"]}\n\t}\n});\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -140,
+        -60
+      ],
+      "id": "c5c4f324-9a86-4d1e-b01a-21bbddb86006",
+      "name": "JavaScript"
+    },
+    {
+      "parameters": {
+        "sendTo": "wensheng.tedchl@gmail.com",
+        "subject": "n8n_test",
+        "message": "={{$json[\"html\"]}}",
+        "options": {
+          "appendAttribution": true,
+          "senderName": "NDHU n8n test"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        480,
+        -60
+      ],
+      "id": "03990c29-24d4-4c67-b2b9-3ab6e9ab6dff",
+      "name": "Gmail",
+      "webhookId": "d98ddd97-c6cd-48e5-bb1a-fd361dfeaaa9",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "SCdRMubDxiic6Ddy",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "console.log($input.all());\n\n// Fetch all input items\nconst allData = $input.all(); \n\n// Map the data to extract only the JSON part\nconst data = allData.map(item => item.json);\n\nlet htmlContent = `\n  <h2>PM2.5 Low-Level Data Report</h2>\n  <table border=\"1\" style=\"border-collapse: collapse; text-align: left;\">\n    <thead>\n      <tr>\n        <th>Sitename</th>\n        <th>PM2.5</th>\n      </tr>\n    </thead>\n    <tbody>\n`;\n\n// Iterate through the data array and build rows\ndata.forEach(item => {\n  htmlContent += `\n    <tr>\n      <td>${item.sitename}</td>\n      <td>${item[\"pm2.5\"] || \"N/A\"}</td>\n    </tr>\n  `;\n});\n\nhtmlContent += `\n    </tbody>\n  </table>\n`;\n\n// Return the HTML content for the next node\nreturn {\n  html: htmlContent,\n};\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        300,
+        -60
+      ],
+      "id": "4e3e8a86-a209-42ec-9511-ec8ded7feab7",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get input data from the previous node\nconst inputData = $input.all();\n\n// Filter records where pm2.5 is below 10\nconst filteredData = inputData.filter(item => {\n    const pm25 = parseFloat(item.json[\"pm2.5\"]); // Use bracket notation to access pm2.5\n    return !isNaN(pm25) && pm25 < 20; // Ensure pm2.5 is a valid number and below 10\n});\n\n// Return filtered results\nreturn filteredData;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        80,
+        -180
+      ],
+      "id": "34cb1465-daeb-4295-af75-2cf46e972dfa",
+      "name": "JavaScript1"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "# Retrieve input data from the previous node\ninput_data = _input.all()\n\n# Filter records where pm2.5 is a valid number and below 20\nfiltered_data = [\n    item for item in input_data\n    if isinstance((pm25 := item.get(\"json\", {}).get(\"pm2.5\")), (int, float, str)) and str(pm25).replace('.', '', 1).isdigit() and float(pm25) < 20\n]\n\n# Return filtered results\nreturn filtered_data\n\n\n\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        80,
+        40
+      ],
+      "id": "124bf896-4153-4758-9279-8f1e226d51ea",
+      "name": "Python"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "JavaScript": {
+      "main": [
+        [
+          {
+            "node": "JavaScript1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Python",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail": {
+      "main": [
+        []
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "JavaScript1": {
+      "main": [
+        []
+      ]
+    },
+    "Python": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1cce07e1-864c-41da-9d11-53da6a49863d",
+  "meta": {
+    "instanceId": "558d88703fb65b2d0e44613bc35916258b0f0bf983c5d4730c00c424b77ca36a"
+  },
+  "id": "57xd1FyUp7XYsOrj",
+  "tags": []
+}

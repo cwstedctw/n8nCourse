@@ -1,0 +1,63 @@
+{
+  "name": "Gmail Test",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "59f7b4b1-055b-4560-8d5d-378ebf549277",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "sendTo": "wensheng.tedchl@gmail.com",
+        "subject": "n8n_test",
+        "message": "<!DOCTYPE html> <html lang=\"en\"> <head>     <meta charset=\"UTF-8\">     <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">     <title>Test Email</title>     <style>         body {             font-family: Arial, sans-serif;             margin: 0;             padding: 0;             background-color: #f4f4f4;         }         .email-container {             max-width: 600px;             margin: 20px auto;             background: #ffffff;             padding: 20px;             border: 1px solid #ddd;             border-radius: 8px;         }         .header {             text-align: center;             background-color: #007bff;             color: white;             padding: 10px;             border-radius: 8px 8px 0 0;         }         .content {             padding: 20px;             line-height: 1.6;             color: #333;         }         .footer {             text-align: center;             padding: 10px;             font-size: 12px;             color: #666;         }         .button {             display: inline-block;             background-color: #007bff;             color: white;             padding: 10px 20px;             text-decoration: none;             border-radius: 5px;             margin-top: 20px;         }         .button:hover {             background-color: #0056b3;         }     </style> </head> <body>     <div class=\"email-container\">         <div class=\"header\">             <h1>Welcome to Our Service!</h1>         </div>         <div class=\"content\">             <p>Hi there,</p>             <p>This is a test email to demonstrate how an HTML email looks. You can customize this template to fit your needs.</p>             <p>If you have any questions, feel free to <a href=\"mailto:support@example.com\">contact our support team</a>.</p>             <a href=\"#\" class=\"button\">Get Started</a>         </div>         <div class=\"footer\">             <p>&copy; 2025 Your Company. All rights reserved.</p>             <p>If you don't want to receive emails from us, you can <a href=\"#\">unsubscribe here</a>.</p>         </div>     </div> </body> </html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        220,
+        0
+      ],
+      "id": "7f8c5f5d-c9ea-45c5-b442-89395ac420bb",
+      "name": "Gmail",
+      "webhookId": "d98ddd97-c6cd-48e5-bb1a-fd361dfeaaa9",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "SCdRMubDxiic6Ddy",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "56ab5433-bde2-4f83-b921-96b548872d38",
+  "meta": {
+    "instanceId": "558d88703fb65b2d0e44613bc35916258b0f0bf983c5d4730c00c424b77ca36a"
+  },
+  "id": "QjeGf0XAGyKnlvue",
+  "tags": []
+}
