@@ -1,0 +1,180 @@
+{
+  "name": "workflow 2 part1",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -300,
+        -40
+      ],
+      "id": "17812fa2-66b2-4521-b412-8fc686e2775a",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "url": "https://internal.users.n8n.cloud/webhook/level2-erp",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "unique_id",
+              "value": "f672408dfb41cfc31548cde4651b96c8"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -80,
+        -160
+      ],
+      "id": "5d2f7d72-bf55-4caa-99e4-4a628244b1c0",
+      "name": "HTTP Request",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "XpxVBEAoGPU9yWzp",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "app4RPBrgXOvy9ZnZ",
+          "mode": "list",
+          "cachedResultName": "Level2_data",
+          "cachedResultUrl": "https://airtable.com/app4RPBrgXOvy9ZnZ"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblIyYjUU0N4XgM5o",
+          "mode": "list",
+          "cachedResultName": "Customers",
+          "cachedResultUrl": "https://airtable.com/app4RPBrgXOvy9ZnZ/tblIyYjUU0N4XgM5o"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -80,
+        40
+      ],
+      "id": "1f384206-4e02-4e24-9efc-8fe17d55a04e",
+      "name": "Airtable",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "ALnUVymUUJC72NXr",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "fieldsToMatchString": "customerID",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        140,
+        -60
+      ],
+      "id": "ef721afa-af55-4690-bee8-e1a3c19298a2",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "sortFieldsUi": {
+          "sortField": [
+            {
+              "fieldName": "orderPrice",
+              "order": "descending"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.sort",
+      "typeVersion": 1,
+      "position": [
+        340,
+        -60
+      ],
+      "id": "c32dd9b1-a4a3-4028-9179-8ea188659a13",
+      "name": "Sort"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Airtable",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Sort",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "e8999982-7a02-4e2e-a591-93bf806ac850",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "558d88703fb65b2d0e44613bc35916258b0f0bf983c5d4730c00c424b77ca36a"
+  },
+  "id": "LQEslV8lc45Lx6cE",
+  "tags": []
+}
