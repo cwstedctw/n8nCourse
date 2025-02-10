@@ -1,0 +1,326 @@
+{
+  "name": "workflow 2 part 2",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1260,
+        -80
+      ],
+      "id": "faa63b17-947b-4ef1-9a46-02eac8429f07",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "url": "https://internal.users.n8n.cloud/webhook/level2-erp",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "unique_id",
+              "value": "f672408dfb41cfc31548cde4651b96c8"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1040,
+        -220
+      ],
+      "id": "c98b4a32-b3c3-4eb6-995c-11ba06c42af5",
+      "name": "HTTP Request",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "XpxVBEAoGPU9yWzp",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "app4RPBrgXOvy9ZnZ",
+          "mode": "list",
+          "cachedResultName": "Level2_data",
+          "cachedResultUrl": "https://airtable.com/app4RPBrgXOvy9ZnZ"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblIyYjUU0N4XgM5o",
+          "mode": "list",
+          "cachedResultName": "Customers",
+          "cachedResultUrl": "https://airtable.com/app4RPBrgXOvy9ZnZ/tblIyYjUU0N4XgM5o"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -1040,
+        0
+      ],
+      "id": "c78fbede-cd58-4c06-b9ad-89d1dfe6ffc4",
+      "name": "Airtable",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "ALnUVymUUJC72NXr",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "fieldsToMatchString": "customerID",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        -800,
+        -100
+      ],
+      "id": "b4f6c1bd-29a9-41d5-b30e-22838dbd1069",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "sortFieldsUi": {
+          "sortField": [
+            {
+              "fieldName": "orderPrice",
+              "order": "descending"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.sort",
+      "typeVersion": 1,
+      "position": [
+        -620,
+        -100
+      ],
+      "id": "7aa66917-e74a-473c-90c5-e30ee9aeca7b",
+      "name": "Sort"
+    },
+    {
+      "parameters": {
+        "sendTo": "wschen@gms.ndhu.edu.tw",
+        "subject": "n8n_test",
+        "message": "<!DOCTYPE html> <html lang=\"en\"> <head>     <meta charset=\"UTF-8\">     <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">     <title>Test Email</title>     <style>         body {             font-family: Arial, sans-serif;             margin: 0;             padding: 0;             background-color: #f4f4f4;         }         .email-container {             max-width: 600px;             margin: 20px auto;             background: #ffffff;             padding: 20px;             border: 1px solid #ddd;             border-radius: 8px;         }         .header {             text-align: center;             background-color: #007bff;             color: white;             padding: 10px;             border-radius: 8px 8px 0 0;         }         .content {             padding: 20px;             line-height: 1.6;             color: #333;         }         .footer {             text-align: center;             padding: 10px;             font-size: 12px;             color: #666;         }         .button {             display: inline-block;             background-color: #007bff;             color: white;             padding: 10px 20px;             text-decoration: none;             border-radius: 5px;             margin-top: 20px;         }         .button:hover {             background-color: #0056b3;         }     </style> </head> <body>     <div class=\"email-container\">         <div class=\"header\">             <h1>Welcome to Our Service!</h1>         </div>         <div class=\"content\">             <p>Hi there,</p>             <p>This is a test email to demonstrate how an HTML email looks. You can customize this template to fit your needs.</p>             <p>If you have any questions, feel free to <a href=\"mailto:support@example.com\">contact our support team</a>.</p>             <a href=\"#\" class=\"button\">Get Started</a>         </div>         <div class=\"footer\">             <p>&copy; 2025 Your Company. All rights reserved.</p>             <p>If you don't want to receive emails from us, you can <a href=\"#\">unsubscribe here</a>.</p>         </div>     </div> </body> </html>",
+        "options": {
+          "attachmentsUi": {
+            "attachmentsBinary": [
+              {}
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -60,
+        -100
+      ],
+      "id": "7e1b3ac2-8ed5-4eda-bff3-8a1de709c5a0",
+      "name": "Gmail",
+      "webhookId": "374a211c-0f1f-4e09-8520-8762ef935461",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "h9RHUkSh1awQpsQ9",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "toJson",
+        "mode": "each",
+        "binaryPropertyName": "=data",
+        "options": {
+          "fileName": "={{ $json.orderID }}.json"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        -220,
+        -100
+      ],
+      "id": "bd0a86d1-e807-4f7b-858f-ed6166a064f3",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "authentication": "webhook",
+        "content": "=I sent the file using email with the label ID {{ $json.id }}. My ID: f672408dfb41cfc31548cde4651b96c8",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        120,
+        -100
+      ],
+      "id": "5dbd984a-7c3a-4663-92d4-554fb9c340d7",
+      "name": "Discord",
+      "credentials": {
+        "discordWebhookApi": {
+          "id": "ziQbgjH2Jj8JLFA0",
+          "name": "Discord Webhook account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "39b587fa-be4b-42e1-88cb-d5d1dc4498da",
+              "leftValue": "={{ $json.region }}",
+              "rightValue": "Americas",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -440,
+        -80
+      ],
+      "id": "4d83e5ad-1a6b-467b-8ea7-deaf056a790f",
+      "name": "If"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Airtable",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Sort",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sort": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail": {
+      "main": [
+        [
+          {
+            "node": "Discord",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "cd89f033-7175-47bb-822a-7f2a1be73e80",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "558d88703fb65b2d0e44613bc35916258b0f0bf983c5d4730c00c424b77ca36a"
+  },
+  "id": "fUWXEqSj4fFUnGJL",
+  "tags": []
+}
